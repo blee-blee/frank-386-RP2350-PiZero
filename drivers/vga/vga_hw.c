@@ -492,7 +492,12 @@ static void __time_critical_func(render_gfx_line_cga2)(uint32_t line, uint32_t *
     }
 }
 
-uint32_t __scratch_y("spread8_lut") spread8_lut[256];
+// Memory corruption happened if placing spread8_lut[256] to __scratch_y.
+// Function load_rom() may trash the last portion of the initialized 
+// spread8_lut[256] causing function render_gfx_line_ega640() lookup
+// wrong pixels for 640x480 image display via HDMI/DVI.
+// Let linker to place spread8_lut[256] to the RAM
+uint32_t spread8_lut[256];
 // Spread 8 bits of a byte into positions 0,4,8,...28
 static inline uint32_t spread8(uint32_t plane) {
     plane = (plane | (plane << 12)) & 0x000F000Fu;

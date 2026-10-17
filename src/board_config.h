@@ -61,6 +61,10 @@
 #ifndef BOARD_C2
 #define BOARD_HAS_PS2 1
 #endif
+// for the use case: RP2350-PiZero using USB keyboard and mouse
+#if (defined BOARD_Z2) && (defined USB_HID_ENABLED)
+#undef BOARD_HAS_PS2
+#endif
 
 //=============================================================================
 // CPU/PSRAM Speed Defaults (can be overridden via CMake)
